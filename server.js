@@ -20,7 +20,7 @@ const locationSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-const Location = mongoose.model("Location", locationSchema);
+const Location = mongoose.model("Location", locationSchema,'locations');
 
 // Serve static files from 'public'
 app.use(express.static("public"));
