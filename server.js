@@ -1,7 +1,3 @@
-const cors = require("cors");
-
-// Allow all origins (for testing purposes)
-app.use(cors());
 
 const express = require("express");
 const mongoose = require("mongoose");
