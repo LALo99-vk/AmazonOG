@@ -1,50 +1,49 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
-const nodemailer = require("nodemailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from the 'public' folder
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("MongoDB connection error:", err));
+
+// Define a schema for storing location data
+const locationSchema = new mongoose.Schema({
+  latitude: String,
+  longitude: String,
+  timestamp: { type: Date, default: Date.now }
+});
+
+const Location = mongoose.model("Location", locationSchema);
+
+// Serve static files from 'public'
 app.use(express.static("public"));
+
+// Middleware for JSON data
 app.use(express.json());
 
-// Email setup using Nodemailer
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+// API to save location data to MongoDB
+app.post("/location", async (req, res) => {
+  const { latitude, longitude } = req.body;
+  const newLocation = new Location({ latitude, longitude });
+
+  try {
+    await newLocation.save();
+    console.log("Location Saved to Database");
+    res.json({ message: "Location saved successfully!" });
+  } catch (error) {
+    console.error("Error saving to database:", error);
+    res.status(500).json({ message: "Failed to save location." });
   }
 });
 
-// API endpoint to receive location data and send an email
-app.post("/location", (req, res) => {
-  const { latitude, longitude } = req.body;
-  const timestamp = new Date().toISOString();
-
-  console.log(`Location Received: Latitude: ${latitude}, Longitude: ${longitude}`);
-
-  // Prepare email content
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: process.env.RECEIVER_EMAIL,
-    subject: "Location Data Received",
-    text: `Location Received at ${timestamp}\nLatitude: ${latitude}\nLongitude: ${longitude}`
-  };
-
-  // Send email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error sending email:", error);
-      return res.status(500).json({ message: "Failed to send email." });
-    }
-    console.log("Email sent:", info.response);
-    res.json({ message: "Location sent to email!" });
-  });
-});
-
-// Start the server
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
