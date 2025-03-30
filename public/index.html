@@ -3,20 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Win a Prize!</title>
+  <title>Win Big Today!</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      background: linear-gradient(45deg, #f3e7e9, #e3eeff);
       color: #333;
       text-align: center;
       padding: 20px;
     }
     h1 {
       color: #ff4757;
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.2rem;
     }
     button {
-      background-color: #1e90ff;
+      background-color: #ff4757;
       color: white;
       border: none;
       padding: 15px 30px;
@@ -27,36 +31,32 @@
       transition: background-color 0.3s;
     }
     button:hover {
-      background-color: #007bff;
+      background-color: #e04050;
     }
     .card {
       background-color: white;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 500px;
     }
   </style>
 </head>
 <body>
-  <h1>🎁 Congratulations! You've Been Selected!</h1>
-  <p>Choose one of the options below to claim your prize:</p>
+  <h1>🎉 Win Big Today!</h1>
+  <p>Your chance to win amazing prizes is just one click away! Act now for a life-changing reward.</p>
 
   <div class="card">
-    <h3>🏆 Win a Brand New Smartphone!</h3>
-    <p>Click the button below to claim your entry into the lucky draw.</p>
-    <button onclick="handleClaim('Smartphone')">Claim Now</button>
+    <h3>📱 Win a Brand New Smartphone!</h3>
+    <p>Enter the grand lucky draw and stand a chance to win the latest smartphone.</p>
+    <button onclick="handleClaim('Smartphone')">Claim Your Chance</button>
   </div>
 
   <div class="card">
-    <h3>🛍️ Exclusive Shopping Discount!</h3>
-    <p>Get a 50% off coupon for your next online shopping spree.</p>
-    <button onclick="handleClaim('Shopping Discount')">Get Coupon</button>
-  </div>
-
-  <div class="card">
-    <h3>💰 Win a Cash Prize!</h3>
-    <p>Take a short survey to enter for a chance to win $500.</p>
+    <h3>💰 Win an Instant Cash Prize!</h3>
+    <p>Complete a quick survey and you could win a cash prize up to $500!</p>
     <button onclick="handleClaim('Cash Prize')">Start Survey</button>
   </div>
 
